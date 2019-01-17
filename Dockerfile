@@ -7,6 +7,7 @@ ARG VAGRANT_PATH=$LOCAL_PATH/vagrant
 
 RUN set -ex                           \
     && yum update -y \
+    && yum -y install gcc-c++ \
     && yum clean -y expire-cache
 
 # volumes
