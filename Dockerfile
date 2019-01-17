@@ -21,8 +21,8 @@ VOLUME $VAGRANT_DATA               \
 ENV PATH $LOCAL_PATH/bin:$PATH
 
 RUN cd $LOCAL_PATH && git clone https://github.com/hashicorp/vagrant.git
-RUN cd $VAGRANT_PATH && bundle binstubs bundler --force
 RUN cd $VAGRANT_PATH && bundle install
+RUN cd $VAGRANT_PATH && bundle binstubs bundler --force
 RUN cd $VAGRANT_PATH && bundle exec vagrant version
 RUN cd $VAGRANT_PATH && bundle exec vagrant version
 RUN cd $VAGRANT_PATH && bundle exec vagrant list-commands
