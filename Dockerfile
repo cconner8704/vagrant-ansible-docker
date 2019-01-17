@@ -28,7 +28,7 @@ RUN cd $VAGRANT_PATH && $BUNDLE install
 RUN which bundle && echo "yay"
 RUN cd $VAGRANT_PATH && $BUNDLE exec vagrant version
 RUN which bundle && echo "yay"
-RUN cd $VAGRANT_PATH && $BUNDLE binstubs bundler --force
+#RUN cd $VAGRANT_PATH && $BUNDLE binstubs bundler --force
 RUN which bundle && echo "yay"
 RUN cd $VAGRANT_PATH && $BUNDLE --binstubs exec
 RUN which bundle && echo "yay"
