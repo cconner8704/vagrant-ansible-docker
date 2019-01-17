@@ -4,6 +4,7 @@ MAINTAINER Chris Conner <chrism.conner@gmail.com>
 
 ARG LOCAL_PATH=/usr/local
 ARG VAGRANT_PATH=$LOCAL_PATH/vagrant
+ARG BUNDLE=/usr/local/bin/bundle
 ARG VAGRANT_DATA=/vagrant
 
 RUN set -ex                           \
@@ -23,13 +24,13 @@ ENV PATH $LOCAL_PATH/bin:$PATH
 RUN which bundle && echo "yay"
 RUN cd $LOCAL_PATH && git clone https://github.com/hashicorp/vagrant.git
 RUN which bundle && echo "yay"
-RUN cd $VAGRANT_PATH && bundle install
+RUN cd $VAGRANT_PATH && $BUNDLE install
 RUN which bundle && echo "yay"
-RUN cd $VAGRANT_PATH && bundle exec vagrant version
+RUN cd $VAGRANT_PATH && $BUNDLE exec vagrant version
 RUN which bundle && echo "yay"
-RUN cd $VAGRANT_PATH && bundle binstubs bundler --force
+RUN cd $VAGRANT_PATH && $BUNDLE binstubs bundler --force
 RUN which bundle && echo "yay"
-RUN cd $VAGRANT_PATH && bundle --binstubs exec
+RUN cd $VAGRANT_PATH && $BUNDLE --binstubs exec
 RUN which bundle && echo "yay"
 RUN $VAGRANT_PATH/exec/vagrant version
 RUN which bundle && echo "yay"
