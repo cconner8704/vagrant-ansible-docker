@@ -24,11 +24,8 @@ RUN cd $LOCAL_PATH && git clone https://github.com/hashicorp/vagrant.git
 RUN cd $VAGRANT_PATH && bundle install
 RUN cd $VAGRANT_PATH && bundle binstubs bundler --force
 RUN cd $VAGRANT_PATH && bundle exec vagrant version
-RUN cd $VAGRANT_PATH && bundle exec vagrant version
-RUN cd $VAGRANT_PATH && bundle exec vagrant list-commands
 RUN cd $VAGRANT_PATH && bundle --binstubs exec
 RUN $VAGRANT_PATH/exec/vagrant version
-RUN $VAGRANT_PATH/exec/vagrant list-commands
 RUN cd $VAGRANT_DATA && $VAGRANT_PATH/exec/vagrant init -m hashicorp/precise64
 RUN ln -sf $VAGRANT_PATH/exec/vagrant /usr/local/bin/vagrant
 
