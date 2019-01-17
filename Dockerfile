@@ -20,12 +20,19 @@ VOLUME $VAGRANT_DATA               \
 
 ENV PATH $LOCAL_PATH/bin:$PATH
 
+RUN which bundle && echo "yay"
 RUN cd $LOCAL_PATH && git clone https://github.com/hashicorp/vagrant.git
+RUN which bundle && echo "yay"
 RUN cd $VAGRANT_PATH && bundle install
+RUN which bundle && echo "yay"
 RUN cd $VAGRANT_PATH && bundle exec vagrant version
+RUN which bundle && echo "yay"
 RUN cd $VAGRANT_PATH && bundle binstubs bundler --force
+RUN which bundle && echo "yay"
 RUN cd $VAGRANT_PATH && bundle --binstubs exec
+RUN which bundle && echo "yay"
 RUN $VAGRANT_PATH/exec/vagrant version
+RUN which bundle && echo "yay"
 RUN cd $VAGRANT_DATA && $VAGRANT_PATH/exec/vagrant init -m hashicorp/precise64
 RUN ln -sf $VAGRANT_PATH/exec/vagrant /usr/local/bin/vagrant
 
