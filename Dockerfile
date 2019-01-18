@@ -3,11 +3,11 @@ FROM cmconner156/centos7-ruby-docker:latest
 MAINTAINER Chris Conner <chrism.conner@gmail.com>
 
 ENV LOCAL_PATH=/usr/local \
-    VAGRANT_PATH=$LOCAL_PATH/vagrant
-    BUNDLE=/usr/local/bin/bundle
-    VAGRANT_DATA=/vagrant
+    VAGRANT_PATH=$LOCAL_PATH/vagrant \
+    BUNDLE=/usr/local/bin/bundle \
+    VAGRANT_DATA=/vagrant \
 
-RUN set -ex                           \
+RUN set -ex          \
     && yum update -y \
     && yum -y install gcc-c++ \
     && yum clean -y expire-cache
