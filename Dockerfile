@@ -2,10 +2,10 @@ FROM cmconner156/centos7-ruby-docker:latest
 #FROM cmconner156/centos7-ruby-docker-arm32v7:latest
 MAINTAINER Chris Conner <chrism.conner@gmail.com>
 
-ARG LOCAL_PATH=/usr/local
-ARG VAGRANT_PATH=$LOCAL_PATH/vagrant
-ARG BUNDLE=/usr/local/bin/bundle
-ARG VAGRANT_DATA=/vagrant
+ENV LOCAL_PATH=/usr/local \
+    VAGRANT_PATH=$LOCAL_PATH/vagrant
+    BUNDLE=/usr/local/bin/bundle
+    VAGRANT_DATA=/vagrant
 
 RUN set -ex                           \
     && yum update -y \
@@ -35,6 +35,10 @@ RUN which bundle && echo "yay"
 RUN cd $VAGRANT_DATA && $VAGRANT_PATH/exec/vagrant init -m hashicorp/precise64
 RUN ln -sf $VAGRANT_PATH/exec/vagrant /usr/local/bin/vagrant
 
+COPY entrypoint.sh /sbin/entrypoint.sh
+RUN chmod 755 /sbin/entrypoint.sh
+
 # entrypoint
 #CMD ["/usr/sbin/init"]
-CMD ["$VAGRANT_PATH && $BUNDLE binstubs bundler --force"]
+#CMD ["$VAGRANT_PATH && $BUNDLE binstubs bundler --force"]
+ENTRYPOINT ["/sbin/entrypoint.sh"]
