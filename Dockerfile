@@ -11,6 +11,7 @@ RUN set -ex          \
     && yum update -y \
     && yum -y install gcc-c++ \
     && yum -y install openssh openssh-server openssh-clients openssl-libs \
+    && yum -y install sudo \
     && yum clean -y expire-cache
 
 # volumes
@@ -24,14 +25,16 @@ ENV PATH ${LOCAL_PATH}/bin:${PATH}
 
 # Create and configure vagrant user
 RUN useradd --create-home -d ${VAGRANT_DATA} -s /bin/bash vagrant
+WORKDIR ${VAGRANT_DIR}
 
 # Configure SSH access
 RUN mkdir -p ${VAGRANT_DATA}/.ssh && \
     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbGgmfZZz+3jH5iMvZl0s7uiyyki5R/bRpwsh6FTVLbtmgLvzxX63UTu5axCNBC+wLqZKQhKt3ulAmGSf+Qz9PVNgd0pfL14ziRoEy0peEf5bOSUKIbQ4WBT1B07K5qrspSdP/zJU83Jaa3PfXaY1qIjTEBtv8sbC53Dk3JBFOma+QxJrgOPXe1b94uqPTlIrvvWrHQ4+jLNHjeR3yHDs+RHE30BN4ul+z+Bd6YFcXVRl/UU2RPp3rMDqST3t1fdIhbYHjm26BA1eiQgko85OXXs/NfE4RaODYIZEz4TC+SVA6fp39PFBsfVQF7TcSMpa6SZbsmKuU0dpKAdEIh2kV vagrant insecure public key" > ${VAGRANT_DATA}/.ssh/authorized_keys && \
     chown -R vagrant: ${VAGRANT_DATA}/.ssh && \
-    adduser vagrant sudo && \
+    groupadd sudo && \
+    usermod -a -G sudo  vagrant && \
     `# Enable passwordless sudo for users under the "sudo" group` && \
-    sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers && \
+    echo '%sudo	ALL=(ALL)	NOPASSWD: ALL' > /etc/sudoers.d/sudogroup && \
     echo -n 'vagrant:vagrant' | chpasswd && \
     `# Thanks to http://docs.docker.io/en/latest/examples/running_ssh_service/` && \
     mkdir /var/run/sshd
