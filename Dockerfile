@@ -24,8 +24,8 @@ EXPOSE 22/tcp
 ENV PATH ${LOCAL_PATH}/bin:${PATH}
 
 # Create and configure vagrant user
-RUN useradd --create-home -d ${VAGRANT_DATA} -s /bin/bash vagrant
-WORKDIR ${VAGRANT_DIR}
+RUN useradd -d ${VAGRANT_DATA} -s /bin/bash vagrant
+WORKDIR ${VAGRANT_DATA}
 
 # Configure SSH access
 RUN mkdir -p ${VAGRANT_DATA}/.ssh && \
