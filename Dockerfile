@@ -46,7 +46,7 @@ RUN which bundle && echo "yay"
 RUN git clone https://github.com/hashicorp/vagrant.git
 RUN ls -alrt
 RUN which bundle && echo "yay"
-RUN ${VAGRANT_PATH} && ${BUNDLE} install
+RUN cd ${VAGRANT_PATH} && ${BUNDLE} install
 RUN which bundle && echo "yay"
 RUN cd ${VAGRANT_PATH} && ${BUNDLE} exec vagrant version
 RUN which bundle && echo "yay"
