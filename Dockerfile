@@ -32,7 +32,7 @@ WORKDIR ${VAGRANT_HOME}
 RUN mkdir -p ${VAGRANT_HOME}/.ssh && \
     echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbGgmfZZz+3jH5iMvZl0s7uiyyki5R/bRpwsh6FTVLbtmgLvzxX63UTu5axCNBC+wLqZKQhKt3ulAmGSf+Qz9PVNgd0pfL14ziRoEy0peEf5bOSUKIbQ4WBT1B07K5qrspSdP/zJU83Jaa3PfXaY1qIjTEBtv8sbC53Dk3JBFOma+QxJrgOPXe1b94uqPTlIrvvWrHQ4+jLNHjeR3yHDs+RHE30BN4ul+z+Bd6YFcXVRl/UU2RPp3rMDqST3t1fdIhbYHjm26BA1eiQgko85OXXs/NfE4RaODYIZEz4TC+SVA6fp39PFBsfVQF7TcSMpa6SZbsmKuU0dpKAdEIh2kV vagrant insecure public key" > ${VAGRANT_HOME}/.ssh/authorized_keys && \
     chown -R vagrant: ${VAGRANT_HOME}/.ssh && \
-    chown -R vagrant: ${VAGRANT_DATA}&& \
+    chown -R vagrant: ${VAGRANT_DATA}/ && \
     groupadd sudo && \
     usermod -a -G sudo  vagrant && \
     `# Enable passwordless sudo for users under the "sudo" group` && \
