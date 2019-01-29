@@ -24,6 +24,11 @@ EXPOSE 22/tcp
 
 ENV PATH ${LOCAL_PATH}/bin:${PATH}
 
+RUN rm -f /etc/ssh/ssh_host_ecdsa_key /etc/ssh/ssh_host_ed25519_key /etc/ssh/ssh_host_dsa_key && \
+    ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key
+
+COPY sshd_config /etc/ssh/sshd_config
+
 # Create and configure vagrant user
 RUN useradd --create-home -d ${VAGRANT_HOME} -s /bin/bash vagrant
 WORKDIR ${VAGRANT_HOME}
