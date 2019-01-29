@@ -56,19 +56,11 @@ RUN echo "export VAGRANT_PATH=${VAGRANT_PATH}" >> ~/.bashrc
 RUN echo "export VAGRANT_DATA=${VAGRANT_DATA}" >> ~/.bashrc
 RUN echo "export PATH=${LOCAL_PATH}/bin:${PATH}" >> ~/.bashrc
 
-RUN which bundle && echo "yay"
 RUN git clone https://github.com/hashicorp/vagrant.git
-RUN ls -alrt
-RUN which bundle && echo "yay"
 RUN cd ${VAGRANT_PATH} && sudo ${BUNDLE} install
-RUN which bundle && echo "yay"
 RUN cd ${VAGRANT_PATH} && ${BUNDLE} exec vagrant version
-RUN which bundle && echo "yay"
 RUN cd ${VAGRANT_PATH} && ${BUNDLE} --binstubs exec
-RUN which bundle && echo "yay"
 RUN ${VAGRANT_PATH}/exec/vagrant version
-RUN which bundle && echo "yay"
-#RUN cd ${VAGRANT_DATA} && ${VAGRANT_PATH}/exec/vagrant init -m hashicorp/precise64
 
 USER root
 RUN ln -sf ${VAGRANT_PATH}/exec/vagrant /usr/local/bin/vagrant
@@ -77,6 +69,5 @@ COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
 # entrypoint
-#CMD ["/usr/sbin/init"]
-#CMD ["${VAGRANT_PATH} && ${BUNDLE} binstubs bundler --force"]
 ENTRYPOINT ["/sbin/entrypoint.sh"]
+CMD ["/usr/sbin/sshd", "-D"]
