@@ -6,8 +6,8 @@ ENV LOCAL_PATH /usr/local
 ENV VAGRANT_HOME /home/vagrant
 ENV VAGRANT_PATH ${VAGRANT_HOME}/vagrant
 ENV BUNDLE ${LOCAL_PATH}/bin/bundle
-ENV VAGRANT_DATA /vagrant
-ENV WORKDIR /data
+ENV VAGRANT_DATA /data
+ENV WORKDIR ${VAGRANT_DATA}
 
 RUN set -ex          \
     && yum update -y \
@@ -15,12 +15,12 @@ RUN set -ex          \
     && yum -y install openssh openssh-server openssh-clients openssl-libs \
     && yum -y install sudo \
     && yum -y install python-pip \
+    && yum -y install ansible \
     && yum clean -y expire-cache
 
 # volumes
-VOLUME ${VAGRANT_DATA}               \      
-       ${WORKDIR}		     \
-       /systems               
+VOLUME ${VAGRANT_DATA} \
+       ${VAGRANT_HOME}/.ssh 
 
 # Expose SSHD
 EXPOSE 22/tcp
@@ -37,14 +37,12 @@ RUN useradd --create-home -d ${VAGRANT_HOME} -s /bin/bash vagrant
 WORKDIR ${VAGRANT_HOME}
 
 # Configure SSH access
-RUN mkdir -p ${VAGRANT_HOME}/.ssh && \
-    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbGgmfZZz+3jH5iMvZl0s7uiyyki5R/bRpwsh6FTVLbtmgLvzxX63UTu5axCNBC+wLqZKQhKt3ulAmGSf+Qz9PVNgd0pfL14ziRoEy0peEf5bOSUKIbQ4WBT1B07K5qrspSdP/zJU83Jaa3PfXaY1qIjTEBtv8sbC53Dk3JBFOma+QxJrgOPXe1b94uqPTlIrvvWrHQ4+jLNHjeR3yHDs+RHE30BN4ul+z+Bd6YFcXVRl/UU2RPp3rMDqST3t1fdIhbYHjm26BA1eiQgko85OXXs/NfE4RaODYIZEz4TC+SVA6fp39PFBsfVQF7TcSMpa6SZbsmKuU0dpKAdEIh2kV vagrant insecure public key" > ${VAGRANT_HOME}/.ssh/authorized_keys && \
-    chown -R vagrant: ${VAGRANT_HOME}/.ssh && \
-    echo ${VAGRANT_DATA} && ls -alrt ${VAGRANT_DATA} && \
-    chown -R vagrant: ${VAGRANT_DATA} && \
-    echo ${VAGRANT_DATA} && ls -alrt ${VAGRANT_DATA} && \
+#RUN mkdir -p ${VAGRANT_HOME}/.ssh && \
+#    echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCbGgmfZZz+3jH5iMvZl0s7uiyyki5R/bRpwsh6FTVLbtmgLvzxX63UTu5axCNBC+wLqZKQhKt3ulAmGSf+Qz9PVNgd0pfL14ziRoEy0peEf5bOSUKIbQ4WBT1B07K5qrspSdP/zJU83Jaa3PfXaY1qIjTEBtv8sbC53Dk3JBFOma+QxJrgOPXe1b94uqPTlIrvvWrHQ4+jLNHjeR3yHDs+RHE30BN4ul+z+Bd6YFcXVRl/UU2RPp3rMDqST3t1fdIhbYHjm26BA1eiQgko85OXXs/NfE4RaODYIZEz4TC+SVA6fp39PFBsfVQF7TcSMpa6SZbsmKuU0dpKAdEIh2kV vagrant insecure public key" > ${VAGRANT_HOME}/.ssh/authorized_keys && \
+#    chown -R vagrant: ${VAGRANT_HOME}/.ssh && \
+RUN chown -R vagrant: ${VAGRANT_DATA} && \
     groupadd sudo && \
-    usermod -a -G sudo  vagrant && \
+    usermod -a -G sudo vagrant && \
     `# Enable passwordless sudo for users under the "sudo" group` && \
     echo '%sudo	ALL=(ALL)	NOPASSWD: ALL' > /etc/sudoers.d/sudogroup && \
     echo -n 'vagrant:vagrant' | chpasswd && \
@@ -65,7 +63,6 @@ RUN echo "export VAGRANT_DATA=${VAGRANT_DATA}" >> ~/.bashrc
 RUN echo "export PATH=${VAGRANT_PATH}/exec:${PATH}" >> ~/.bashrc
 
 USER root
-RUN pip install ansible
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
