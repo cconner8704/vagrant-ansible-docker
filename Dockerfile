@@ -68,5 +68,7 @@ RUN ln -sf ${VAGRANT_PATH}/exec/vagrant /usr/local/bin/vagrant
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
+USER vagrant
+
 # entrypoint
 ENTRYPOINT ["/sbin/entrypoint.sh"]

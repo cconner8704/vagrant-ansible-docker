@@ -1,8 +1,6 @@
 #!/bin/bash
 set -x
 
-chown -R vagrant: ${VAGRANT_DATA}
-su - vagrant
+sudo chown -R vagrant: ${VAGRANT_DATA}
 cd ${VAGRANT_PATH} && ${BUNDLE} binstubs bundler --force
-
 sudo /usr/sbin/sshd -D
