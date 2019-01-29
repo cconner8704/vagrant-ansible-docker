@@ -50,21 +50,18 @@ RUN mkdir -p ${VAGRANT_HOME}/.ssh && \
 
 USER vagrant
 
+RUN git clone https://github.com/hashicorp/vagrant.git
+RUN cd ${VAGRANT_PATH} && ${BUNDLE} install
+#RUN cd ${VAGRANT_PATH} && sudo ${BUNDLE} install
+RUN cd ${VAGRANT_PATH} && ${BUNDLE} --binstubs exec
+
 RUN echo "export BUNDLE=${BUNDLE}" >> ~/.bashrc
 RUN echo "export VAGRANT_HOME=${VAGRANT_HOME}" >> ~/.bashrc
 RUN echo "export VAGRANT_PATH=${VAGRANT_PATH}" >> ~/.bashrc
 RUN echo "export VAGRANT_DATA=${VAGRANT_DATA}" >> ~/.bashrc
-RUN echo "export PATH=${LOCAL_PATH}/bin:${PATH}" >> ~/.bashrc
-
-RUN git clone https://github.com/hashicorp/vagrant.git
-RUN cd ${VAGRANT_PATH} && sudo ${BUNDLE} install
-RUN cd ${VAGRANT_PATH} && ${BUNDLE} exec vagrant version
-RUN cd ${VAGRANT_PATH} && ${BUNDLE} --binstubs exec
-RUN ${VAGRANT_PATH}/exec/vagrant version
+RUN echo "export PATH=${VAGRANT_PATH}/exec:${PATH}" >> ~/.bashrc
 
 USER root
-RUN ln -sf ${VAGRANT_PATH}/exec/vagrant /usr/local/bin/vagrant
-
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
