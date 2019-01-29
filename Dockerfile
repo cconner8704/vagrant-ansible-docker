@@ -7,16 +7,19 @@ ENV VAGRANT_HOME /home/vagrant
 ENV VAGRANT_PATH ${VAGRANT_HOME}/vagrant
 ENV BUNDLE ${LOCAL_PATH}/bin/bundle
 ENV VAGRANT_DATA /vagrant
+ENV WORKDIR /data
 
 RUN set -ex          \
     && yum update -y \
     && yum -y install gcc-c++ \
     && yum -y install openssh openssh-server openssh-clients openssl-libs \
     && yum -y install sudo \
+    && yum -y install python-pip \
     && yum clean -y expire-cache
 
 # volumes
 VOLUME ${VAGRANT_DATA}               \      
+       ${WORKDIR}		     \
        /systems               
 
 # Expose SSHD
@@ -62,6 +65,7 @@ RUN echo "export VAGRANT_DATA=${VAGRANT_DATA}" >> ~/.bashrc
 RUN echo "export PATH=${VAGRANT_PATH}/exec:${PATH}" >> ~/.bashrc
 
 USER root
+RUN pip install ansible
 COPY entrypoint.sh /sbin/entrypoint.sh
 RUN chmod 755 /sbin/entrypoint.sh
 
