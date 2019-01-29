@@ -70,4 +70,3 @@ RUN chmod 755 /sbin/entrypoint.sh
 
 # entrypoint
 ENTRYPOINT ["/sbin/entrypoint.sh"]
-CMD ["/usr/sbin/sshd", "-D"]
