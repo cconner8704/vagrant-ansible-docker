@@ -50,6 +50,12 @@ RUN mkdir -p ${VAGRANT_HOME}/.ssh && \
 
 USER vagrant
 
+RUN echo "export BUNDLE=${BUNDLE}" >> ~/.bashrc
+RUN echo "export VAGRANT_HOME=${VAGRANT_HOME}" >> ~/.bashrc
+RUN echo "export VAGRANT_PATH=${VAGRANT_PATH}" >> ~/.bashrc
+RUN echo "export VAGRANT_DATA=${VAGRANT_DATA}" >> ~/.bashrc
+RUN echo "export PATH=${LOCAL_PATH}/bin:${PATH}" >> ~/.bashrc
+
 RUN which bundle && echo "yay"
 RUN git clone https://github.com/hashicorp/vagrant.git
 RUN ls -alrt
