@@ -8,6 +8,7 @@ ENV VAGRANT_PATH ${VAGRANT_HOME}/vagrant
 ENV BUNDLE ${LOCAL_PATH}/bin/bundle
 ENV VAGRANT_DATA /data
 ENV WORKDIR ${VAGRANT_DATA}
+ENV ANSIBLE_CONFIG ${VAGRANT_DATA}/ansible.cfg
 
 RUN set -ex          \
     && yum update -y \
@@ -61,6 +62,7 @@ RUN echo "export BUNDLE=${BUNDLE}" >> ~/.bashrc
 RUN echo "export VAGRANT_HOME=${VAGRANT_HOME}" >> ~/.bashrc
 RUN echo "export VAGRANT_PATH=${VAGRANT_PATH}" >> ~/.bashrc
 RUN echo "export VAGRANT_DATA=${VAGRANT_DATA}" >> ~/.bashrc
+RUN echo "export ANSIBLE_CONFIG=${ANSIBLE_CONFIG}" >> ~/.bashrc
 RUN echo "export PATH=${VAGRANT_PATH}/exec:${PATH}" >> ~/.bashrc
 
 USER root
